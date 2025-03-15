@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from testb import pred_b
-from wt_est import est
+from testc import pred_c
+from testa import pred_a
 import os
 import re
 #global variable
@@ -28,7 +29,7 @@ def get_file_path_from_address():
 file_path = get_file_path_from_address()
 print(f"读取的文件路径: {file_path}")
 
-locations = ["Beijing", "New York", "London", "Manchester"]
+locations = ["Beijing", "Washington", "London", "Paris"]
 
 # data format matching（yyyy/mm/dd）
 date_pattern = r"(\d{4})[./](\d{1,2})[./](\d{1,2})"  # 支持 yyyy.mm.dd 或 yyyy/mm/dd 格式
@@ -46,29 +47,30 @@ def main(category,input_data):
         if not date:
             ans = ("❌ Not found valid date，please use yyyy/mm/dd format（for example 2024/01/05）Or 'tomorrow', 'today', 'next Monday' 。")
             return ans
-        temperature,humidity=est(location,date)
-        ans = "At location",location,"finding weather at date:",date,"The temperature is :",temperature,"The humidity is :",humidity
+        temperature,humidity=pred_a(location,date)
+        ans =  "".join(["in ", location, " at date:", date, " is :", str(temperature), "℃ ", str(float(temperature) * 9/5 + 32), " ℉ ", "The humidity is :", str(humidity), "%"])
+        return ans
 
     elif category =='B':
         date = extract_date(input_data)
         print(date)
-        ans = pred_b(date)
-        ans = "The air quality at date",date,"is:",ans
+        ans = round(float(pred_b(date)),2)
+        ans ="".join([ "at date ",date," is: ",str(ans)," %"])
         return ans
 
     elif category =='C':
-        numbers = [float(x) for x in input_data.split(',')]
-        ans = min(numbers)
-
-    return ans
+        date = extract_date(input_data)
+        price,percent = pred_c(date)
+        ans = "".join(["At date ", date, ", the prediction of S&P 500 Price is : ", str(price),", The Rise&Fall rate is : ", str(percent),"%"])
+        return ans
 
 def print_result(category,input,output):
     if category =='A':
-        result = f"The weather to find is: {output}"
+        result = f"The weather {output}"
     elif category =='B':
-        result = f"The air quality is: {output}"
+        result = f"The air quality {output}"
     elif category =='C':
-        result = f"The minimum in array is: {output}"
+        result = f"{output}"
     return result
 
 

@@ -2,13 +2,13 @@ import pandas as pd
 import re
 import os
 # 读取原始CSV文件（跳过前8行的说明）
-name = "Beijing"
-file_path = fr"raw data\{name}_10year.csv"
+name = "Washinton"
+file_path = fr"raw data\{name}.csv"
 df = pd.read_csv(file_path, skiprows=8, delimiter=";", header=0, encoding="utf-8", on_bad_lines='skip')
 print(df.head())
 
 # 提取所需列（日期、气温 T、湿度 U）
-df_filtered = df.iloc[:, [0, 1, 5]].copy()  # 确保是副本
+df_filtered = df.iloc[:, [0, 1, 4]].copy()  # 确保是副本
 print(df_filtered.head())
 # 重命名列
 df_filtered.columns = ["DateTime", "Temperature", "Humidity"]
